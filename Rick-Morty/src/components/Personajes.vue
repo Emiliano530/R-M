@@ -6,7 +6,10 @@ export default {
     return {
       info: [],
       personajes: [],
-      cont:1
+      pagina:1,
+      siguiente:null,
+      anterior:null,
+      buscar:'',
     }
   },
   mounted() {
@@ -16,8 +19,9 @@ export default {
         this.personajes = response.data.results;
       })
   },
+  
   methods: {
-    pagmas(num) {
+    navpag(num) {
       API_URL='https://rickandmortyapi.com/api/character/?page='+num
       console.log(API_URL)
       axios.get(API_URL)
@@ -26,21 +30,9 @@ export default {
         this.info = response.data.info;
         this.personajes = response.data.results;
       })
-      this.cont++
-    },
-    pagmenos(num) {
-      API_URL='https://rickandmortyapi.com/api/character/?page='+num
-      console.log(API_URL)
-      axios.get(API_URL)
-      .then((response) => {
-        console.log(response.config)
-        this.info = response.data.info;
-        this.personajes = response.data.results;
-      })
-      this.cont--
     },
     buscador(text) {
-      API_URL='https://rickandmortyapi.com/api/character/?name='+text ||'status='+text
+      API_URL='https://rickandmortyapi.com/api/character/?'+('name='+text ||'&status='+text)
       console.log(API_URL)
       axios.get(API_URL)
       .then((response) => {
@@ -48,28 +40,27 @@ export default {
         this.info = response.data.info;
         this.personajes = response.data.results;
       })
-    }
+    },
   },
 }
+
 </script>
 
-<template>
-
-  //input y boton para buscador
-  <input v-model="buscar" placeholder="Buscar" />
+<template >
+  <div class="text-center">
+    <input v-model="buscar" placeholder="Buscar" />
   <button @click="buscador(buscar)">Buscar</button>
-  //
 
-  //texto que muestra datos del api(ya estaba))
   <h2>Hay {{ info.count }} personajes en el programa de Rick & Morty</h2>
 
-  //botones de anterior y siguiente(ya había pero lo edite)
-  <button @click="pagmenos(cont)">Anterior</button>
-  <a>{{ cont }}</a>
-  <button @click="pagmas(cont)">Siguiente</button>
+  <button class="button bg-white text-black" v-if="pagina!==1" @click="navpag(pagina--)">Anterior</button>
+  <a>{{pagina }}</a>
+  <button class="button bg-red-700" v-if="pagina!==this.info.pages+1" @click="navpag(pagina++)">Siguiente</button>
   <ul>
     <li v-for="p in personajes">
-      <a>{{ p.name }} id:{{ p.id }}</a>
+      <a>{{ p.name }}</a>
+      <img class="rounded-3xl scale-50" v-bind:src=" p.image " alt="Imagen_Personaje">
     </li>
   </ul>
+  </div>
 </template>

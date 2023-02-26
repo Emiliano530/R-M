@@ -15,7 +15,6 @@ import HelloWorld from "./components/HelloWorld.vue";
 
     <div class="wrapper">
       <HelloWorld msg="Personajes de Rick & Morty" />
-
       <nav>
         <RouterLink to="/">Inicio</RouterLink>
         <RouterLink to="/personajes">Personajes</RouterLink>
