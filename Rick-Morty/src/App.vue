@@ -9,7 +9,7 @@ import HelloWorld from "./components/HelloWorld.vue";
       alt="Vue logo"
       class="logo"
       src="@/assets/logo.svg"
-      width="125"
+      width="200"
       height="125"
     />
 
