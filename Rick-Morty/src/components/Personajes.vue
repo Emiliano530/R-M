@@ -11,7 +11,7 @@ export default {
       anterior: null,
       buscar: "",
       modal:false,
-      id:""
+      id:"2"
     };
   },
   mounted() {
@@ -43,6 +43,16 @@ export default {
         this.pagina=1
       });
     },
+    datosP() {
+      API_URL =
+        "https://rickandmortyapi.com/api/character/" +this.id
+      console.log(API_URL);
+      axios.get(API_URL).then((response) => {
+        console.log(response.config);
+        this.info = response.data.info;
+        this.personajes = response.data.results;
+      });
+    },
   },
 };
 </script>
@@ -60,7 +70,7 @@ export default {
 
       <Transition enter-active-class="ease-out duration-300"
       enter-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" enter-to-class="opacity-100 translate-y-0 sm:scale-100"
-      leave-active-class="ease-in duration-200" 
+      leave-active-class="ease-in duration-200"
       leave-class="opacity-100 translate-y-0 sm:scale-100" leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
 
       <div v-show="modal" class=" bg-green-900 relative transform overflow-hidden rounded-3xl outline outline-blue-500 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
@@ -76,7 +86,7 @@ export default {
             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
               <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">nombre personaje</h3>
               <div class="mt-2">
-                <p class="text-sm text-gray-500">Informacion de personajes</p>
+                <p class="text-sm text-gray-500">{{ this.id }}</p>
               </div>
             </div>
         </div>
@@ -122,13 +132,12 @@ export default {
           class="card bg-green-900 outline outline-pink-500 rounded-3xl m-5 scale-75 cursor-pointer hover:rotate-2"
           v-for="p in personajes"
         >
-          <img
+          <img @click="id=p.id"
             class="rounded-t-3xl"
             v-bind:src="p.image"
             alt="Imagen_Personaje"
           />
-          <a>{{ p.name }}</a>
-          
+          <a @click="id=p.id">{{ p.name }}</a>
         </li>
       </ul>
     </div>
